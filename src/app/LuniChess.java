@@ -46,9 +46,8 @@ public class LuniChess extends Application{
         m_game = new Game();
         m_game.initBoard();
         m_boardPainter.paint(getBoard());
-        System.out.println(m_canvas.getGraphicsContext2D().getFill());
         m_borderPane.setCenter(m_canvas);
-        Button menu = new Button("Hello");
+        Button menu = new Button("Play");
         m_borderPane.setTop(menu);
         Scene scene = new Scene(m_borderPane);
         
@@ -75,7 +74,7 @@ public class LuniChess extends Application{
         stage.yProperty().addListener(stageYPosListener);
         
         stage.setTitle("LuniChess App");
-        Image icon = new Image(LuniChess.class.getPackage().getName() +"/resources/w/B.png");
+        Image icon = new Image(LuniChess.class.getPackage().getName() +"/a/w/B.png");
         stage.getIcons().add(icon);
         stage.setScene(scene);
         
@@ -83,7 +82,6 @@ public class LuniChess extends Application{
     }
     
     private ConstBoard getBoard() {
-        System.out.println(m_game.getBoard());
         return m_game.getBoard();
     }
     
@@ -91,7 +89,7 @@ public class LuniChess extends Application{
         try {
             if (m_prefs.nodeExists("/app"))
                 return;
-            System.out.println("Preferences not found. Creating...");
+            System.err.println("Preferences not found. Creating...");
             m_prefs.putDouble("width", Toolkit.getDefaultToolkit().getScreenSize().width / 1.5);
             m_prefs.putDouble("height", Toolkit.getDefaultToolkit().getScreenSize().height / 1.5);
             m_prefs.putDouble("xPosition", 0);

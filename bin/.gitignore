@@ -1,0 +1,7 @@
+/board/
+/pgn/
+/piece/
+/bin/
+*/*.class
+/app/
+/game/

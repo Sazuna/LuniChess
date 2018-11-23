@@ -9,6 +9,7 @@ import piece.Bishop;
 import piece.ChessColor;
 import piece.King;
 import piece.Knight;
+import piece.Pawn;
 import piece.Piece;
 import piece.Queen;
 import piece.Rook;
@@ -32,6 +33,8 @@ public class Board implements ConstBoard {
     private ArrayList<Piece> m_blackCaptures;
     
     public Board() {
+        m_whiteCaptures = new ArrayList<Piece>();
+        m_blackCaptures = new ArrayList<Piece>();
         m_board = new Square[8][8];
         for (int i = 0; i < m_board.length ; i ++)
             for (int j = 0; j < m_board[0].length ; j++)
@@ -90,6 +93,9 @@ public class Board implements ConstBoard {
         m_blackCaptures.clear();
     }
     
+    /**
+     * Clear the board and set initial position
+     */
     public void init() {
         clear();
         m_board[0][0].setPiece(new Rook(WHITE, new Coord(0,0)));
@@ -108,6 +114,10 @@ public class Board implements ConstBoard {
         m_board[7][5].setPiece(new Bishop(BLACK, new Coord(7,5)));
         m_board[7][6].setPiece(new Knight(BLACK, new Coord(7,6)));
         m_board[7][7].setPiece(new Rook(BLACK, new Coord(7,7)));
+        for (int i = 0 ; i < 8; i++) {
+            m_board[1][i].setPiece(new Pawn(WHITE, new Coord(1,i)));
+            m_board[6][i].setPiece(new Pawn(BLACK, new Coord(6,i)));
+        }
         m_whiteCastle = true;
         m_blackCastle = true;
         m_whiteLongCastle = true;

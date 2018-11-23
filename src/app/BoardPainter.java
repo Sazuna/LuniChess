@@ -4,6 +4,7 @@ import java.util.prefs.Preferences;
 
 import board.BoardUtil;
 import board.ConstBoard;
+import board.Square;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -32,25 +33,25 @@ public class BoardPainter {
     }
     
     public void paint(ConstBoard board) {
-        System.out.println("painting");
-        m_graphics.drawImage(darkSquares[2], 10,10);
+    //    m_graphics.drawImage(darkSquares[2], 10,10);
         m_graphics.setFill(Color.BLACK);
-        Color white = Color.WHITE;
-        Color black = Color.BLACK;
-        for (int i = 0; i < BoardUtil.SIZE; i++)
-            for (int j = 0; j < BoardUtil.SIZE; j++) {
+        Color white = Color.BEIGE;
+        Color black = Color.BROWN;
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++) {
                 if ((i + j) % 2 == 0)
                     m_graphics.setFill(white);
                 else
                     m_graphics.setFill(black);
-                m_graphics.fillRect(i * m_size, j * m_size, m_size, m_size);
-                char piece = board.getSquare(i, j).getPiece().getName();
-                char color = board.getSquare(i, j).getPiece().getColor().getName();
-                //In chess color, must return null !
-                Image image = new Image(getClass().getPackage().getName() + "resources/" + color + "" + piece + ".png");
-                m_graphics.drawImage(image, i* m_size,  j * m_size);
+                m_graphics.fillRect(j * m_size, (7-i) * m_size, m_size, m_size);
+                Square square = board.getSquare(i, j);
+                if (square.hasPiece()) {
+                    char piece = board.getSquare(i, j).getPiece().getName();
+                    char color = board.getSquare(i, j).getPiece().getColor().getName();
+                    Image image = new Image(getClass().getPackage().getName() +"/a/" + color + "/" + piece + ".png");
+                    m_graphics.drawImage(image, j* m_size,  (7-i)* m_size);
+                }
             }
-        m_graphics.fillRect(0, 0, 30, 30);
     }
 
 }

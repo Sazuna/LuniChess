@@ -19,6 +19,7 @@ public class Game {
     
     public void initBoard() {
         m_board = new Board();
+        m_board.init();
     }
     
     public void initTree() {
