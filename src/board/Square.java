@@ -2,7 +2,6 @@ package board;
 
 import java.util.ArrayList;
 
-import piece.Empty;
 import piece.Piece;
 
 public class Square {
@@ -11,17 +10,17 @@ public class Square {
     
     public Square(int range, int column) {
         m_coord = new Coord(range, column);
-        m_piece = new Empty(null, null);
+        m_piece = null;
     }
     
     public Square (char column, char range) {
         m_coord = new Coord(column, range);
-        m_piece = new Empty(null, null);
+        m_piece = null;
     }
     
     public Square (String coord) {
         m_coord = new Coord(coord);
-        m_piece = new Empty(null, null);
+        m_piece = null;
     }
     
     public void setPiece(Piece piece) {

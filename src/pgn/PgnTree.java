@@ -6,7 +6,6 @@ import static piece.ChessColor.BLACK;
 import java.util.ArrayList;
 
 import board.Square;
-import game.Move;
 import piece.ChessColor;
 import piece.Piece;
 
