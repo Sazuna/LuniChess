@@ -11,9 +11,9 @@ public class Move {
     
     private Square m_to;
     
-    public Move(Piece piece, Square from, Square to) {
-        
-        m_piece = piece;
+    public Move(Square from, Square to) {
+        if (from != null && from.hasPiece())
+            m_piece = from.getPiece();
         m_from = from;
         m_to = to;
         
@@ -52,7 +52,7 @@ public class Move {
     }
     
     public String toString() {
-
+        if (m_piece == null ) return "";
         return m_piece.toString() + m_to.toString();
     }
     

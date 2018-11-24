@@ -12,34 +12,57 @@ public class BoardPainter {
     
     private static AppSettings m_settings;
     
-    public BoardPainter(GraphicsContext graphics, AppSettings settings) {
+    private static ConstBoard m_board;
+    
+    public BoardPainter(GraphicsContext graphics, AppSettings settings, ConstBoard board) {
         m_graphics = graphics;
         m_settings = settings;
+        m_board = board;
     }
     
-    public void paint(ConstBoard board) {
+    public void paint() {
         m_graphics.setFill(Color.BLACK);
-        Color white = Color.BEIGE;
-        Color black = Color.BROWN;
-        int sense = m_settings.getBoardSense();
-        double size = m_settings.getSquareSize();
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {
-                if ((i + j) % 2 == 0)
-                    m_graphics.setFill(black);
+                Square square = m_board.getSquare(i, j);
+                if (square.hasPiece())
+                    drawPiece(square);
                 else
-                    m_graphics.setFill(white);
-                double x = AppUtil.getX(j, sense, size);
-                double y = AppUtil.getY(i, sense, size);
-                m_graphics.fillRect(x, y, size, size);
-                Square square = board.getSquare(i, j);
-                if (square.hasPiece()) {
-                    char piece = board.getSquare(i, j).getPiece().getName();
-                    char color = board.getSquare(i, j).getPiece().getColor().getName();
-                    Image image = new Image(getClass().getPackage().getName() +"/a/" + color + "/" + piece + ".png");
-                    m_graphics.drawImage(image, x,  y);
-                }
+                    emptySquare(square);
             }
+    }
+    
+    public void move(Square from, Square to) {
+        emptySquare(from);
+        drawPiece(to);
+    }
+    
+    private void emptySquare(Square square) {
+        int column = square.getColumn();
+        int range = square.getRange();
+        if ((column + range) % 2 == 0)
+            m_graphics.setFill(Color.BROWN);
+        else
+            m_graphics.setFill(Color.BEIGE);
+        int sense = m_settings.getBoardSense();
+        double size = m_settings.getSquareSize();
+        double x = AppUtil.getX(column, sense, size);
+        double y = AppUtil.getY(range, sense, size);
+        m_graphics.fillRect(x, y, size, size);
+    }
+    
+    private void drawPiece(Square square) {
+        emptySquare(square);
+        int column = square.getColumn();
+        int range = square.getRange();
+        int sense = m_settings.getBoardSense();
+        double size = m_settings.getSquareSize();
+        double x = AppUtil.getX(column, sense, size);
+        double y = AppUtil.getY(range, sense, size);
+        char piece = square.getPiece().getName();
+        char color = square.getPiece().getColor().getName();
+        Image image = new Image(getClass().getPackage().getName() +"/a/" + color + "/" + piece + ".png");
+        m_graphics.drawImage(image, x,  y);
     }
     
     

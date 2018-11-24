@@ -12,8 +12,8 @@ class TestRook {
 
     @Test
     void test() {
-        Piece p = new Rook(ChessColor.WHITE, new Coord("h7"));
-        ArrayList<Coord> possibleSquares = p.getPossibleSquares();
+        Piece p = new Rook(ChessColor.WHITE);
+        ArrayList<Coord> possibleSquares = p.getPossibleSquares(new Coord("h7"));
         assertTrue(possibleSquares.contains(new Coord("a7")));
         assertTrue(possibleSquares.contains(new Coord("h8")));
         assertTrue(possibleSquares.contains(new Coord("h2")));

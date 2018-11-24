@@ -40,7 +40,7 @@ public final class AppUtil {
         return column;
     }
     
-    public static Coord getClickedSquare(double x, double y, int sense, double size) {
+    public static Coord getClickedCoord(double x, double y, int sense, double size) {
         Coord coord = new Coord(AppUtil.getRange(y, sense, size),AppUtil.getColumn(x, sense, size));
         return coord;
     }

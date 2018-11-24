@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import board.Square;
 import piece.ChessColor;
-import piece.Piece;
 
 public class PgnTree{
 
@@ -37,7 +36,7 @@ public class PgnTree{
     }
     
     public PgnTree() {
-        m_root = new PgnMove(null, null, null);
+        m_root = new PgnMove(null, null);
         m_actualMove = m_root;
     }
 
@@ -46,14 +45,14 @@ public class PgnTree{
      * @param firstMove
      */
     public PgnTree(PgnMove firstMove) {
-        m_root = new PgnMove(null, null, null);
+        m_root = new PgnMove(null, null);
         m_root.addNext(firstMove);
         m_actualMove = firstMove;
         m_firstToMove = BLACK;
     }
 
     public PgnTree(PgnMove firstMove, ChessColor toMove) {
-        m_root = new PgnMove(null, null, null);
+        m_root = new PgnMove(null, null);
         m_root.addNext(firstMove);
         m_actualMove = firstMove;
         m_firstToMove = toMove.otherColor();
@@ -77,12 +76,13 @@ public class PgnTree{
         m_actualMove = move;
         move.setAsCurrentVariation();
     }
+    
     /**
      * Creates the move from the piece and its move squares
      * @param move
      */
-    public void addVariation(Piece piece, Square from, Square to) {
-        PgnMove m = new PgnMove(piece, from, to);
+    public void addVariation(Square from, Square to) {
+        PgnMove m = new PgnMove(from, to);
         m_actualMove.addNext(m);
         m_actualMove = m;
     }

@@ -5,13 +5,17 @@ import board.ConstBoard;
 import board.Square;
 import pgn.PgnTree;
 import piece.ChessColor;
-import piece.Piece;
 
 public class Game {
 
     private Board m_board;
     
     private PgnTree m_tree;
+    
+    public Game() {
+        initBoard();
+        initTree();
+    }
     
     public ConstBoard getBoard() {
         return (ConstBoard)m_board;
@@ -42,9 +46,13 @@ public class Game {
         return m_tree.getGameFromBeginning().size();
     }
     
-    public void play(Piece piece, Square from, Square to) {
-        m_tree.addVariation(piece, from, to);
-        if (!to.getPiece().equals(null))
+    public void play(Square from, Square to) {
+        assert (from != null);
+        assert (to != null);
+        m_tree.addVariation(from, to);
+        if (to.hasPiece())
             m_board.setCaptured(to.getPiece());
+        to.setPiece(from.getPiece());
+        from.setPiece(null);
     }
 }

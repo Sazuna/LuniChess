@@ -4,7 +4,6 @@ import static piece.ChessColor.WHITE;
 import static piece.ChessColor.BLACK;
 
 import piece.ChessColor;
-import piece.Piece;
 
 import java.util.ArrayList;
 
@@ -32,8 +31,8 @@ public class PgnMove extends Move{
     private int m_index;
     private String m_comment = "";
     
-    public PgnMove(Piece piece, Square from, Square to, PgnMove previous) {
-        super(piece, from, to);
+    public PgnMove(Square from, Square to, PgnMove previous) {
+        super(from, to);
         this.m_nexts = new ArrayList<PgnMove>();
         String move = super.toString();
         this.m_move = move;
@@ -46,8 +45,8 @@ public class PgnMove extends Move{
             m_index++;
     }
 
-    public PgnMove(Piece piece, Square from, Square to) {
-        super(piece, from, to);
+    public PgnMove(Square from, Square to) {
+        super(from, to);
         m_nexts = new ArrayList<PgnMove>();
         this.m_move = super.toString();
         m_previous = null;

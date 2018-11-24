@@ -6,8 +6,8 @@ import java.util.prefs.Preferences;
 
 import board.ConstBoard;
 import board.Coord;
+import board.Square;
 import game.Game;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -17,16 +17,15 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import piece.ChessColor;
 
-public class LuniChess extends Application{
-
-    public static void main(String[] args) {
-       /*try {
-            //Clear the user's prefs
-            Preferences.userNodeForPackage(LuniChess.class).removeNode();
-        } catch (BackingStoreException e) {
-        }*/
-      Application.launch(args);
+public class LuniChess{
+    
+    public LuniChess() {
+        m_game = new Game();
+        initGame();
+        m_boardPainter = new BoardPainter(m_canvas.getGraphicsContext2D(), m_settings, getBoard());
+        m_boardActions = new BoardActions(m_boardPainter, m_game.getToMove());
     }
     
     private final Preferences m_prefs = Preferences.userNodeForPackage(this.getClass());
@@ -39,13 +38,11 @@ public class LuniChess extends Application{
     
     private final static AppSettings m_settings = new AppSettings();
     
-    private final static BoardPainter m_boardPainter = new BoardPainter(m_canvas.getGraphicsContext2D(), m_settings);
+    private final BoardPainter m_boardPainter;
     
-    private final static BoardActions m_boardActions = new BoardActions();
+    private final BoardActions m_boardActions;
     
-
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void initApp(Stage stage) throws Exception {
         initDefault();
 
         EventHandler<MouseEvent> boardPressed = new EventHandler<MouseEvent>() { 
@@ -53,8 +50,9 @@ public class LuniChess extends Application{
            public void handle(MouseEvent e) {
                int sense = m_settings.getBoardSense();
                double size = m_settings.getSquareSize();
-               Coord coord = AppUtil.getClickedSquare(e.getX(), e.getY(), sense, size);
-               m_boardActions.setPressed(coord);
+               Coord coord = AppUtil.getClickedCoord(e.getX(), e.getY(), sense, size);
+               Square square = getBoard().getSquare(coord.getRange(), coord.getColumn());
+               m_boardActions.setPressed(square);
            } 
         };
         EventHandler<MouseEvent> boardReleased = new EventHandler<MouseEvent>() {
@@ -62,9 +60,13 @@ public class LuniChess extends Application{
             public void handle(MouseEvent e) {
                 int sense = m_settings.getBoardSense();
                 double size = m_settings.getSquareSize();
-                Coord coord = AppUtil.getClickedSquare(e.getX(), e.getY(), sense, size);
-                m_boardActions.setReleased(coord);
-            } 
+                Coord coord = AppUtil.getClickedCoord(e.getX(), e.getY(), sense, size);
+                Square square = getBoard().getSquare(coord.getRange(), coord.getColumn());
+                boolean play = m_boardActions.setReleased(square);
+                if (play) {
+                    play(m_boardActions.getFrom(), m_boardActions.getTo());
+                }
+            }
          };
 
         m_canvas.setWidth(m_prefs.getDouble("boardsize", 500));
@@ -73,7 +75,7 @@ public class LuniChess extends Application{
         m_canvas.setOnMouseReleased(boardReleased);
         m_game = new Game();
         m_game.initBoard();
-        m_boardPainter.paint(getBoard());
+        m_boardPainter.paint();
         m_borderPane.setCenter(m_canvas);
         Button menu = new Button("Play");
         m_borderPane.setTop(menu);
@@ -128,4 +130,34 @@ public class LuniChess extends Application{
             e.printStackTrace();
         }
     }
+    
+    private void play(Square from, Square to) {
+        m_game.play(from, to);
+        m_boardPainter.move(from, to);
+        updateAfterMove();
+    }
+    
+    private void updateAfterMove() {
+        ChessColor toMove = getToMove().otherColor();
+        setToMove(toMove);
+        //TODO 
+    }
+    
+    
+    
+   /////////////////////////////////// Game methods ////////////
+    private void initGame() {
+        m_game.initBoard();
+        m_game.initTree();
+    }
+    
+    private void setToMove(ChessColor toMove) {
+        m_game.setToMove(toMove);
+        m_boardActions.setToMove(toMove);
+    }
+    
+    private ChessColor getToMove() {
+        return m_game.getToMove();
+    }
+    ////////////////////////////////////////////////////////////
 }
