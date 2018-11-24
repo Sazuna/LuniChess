@@ -5,13 +5,16 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import board.ConstBoard;
+import board.Coord;
 import game.Game;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -36,13 +39,30 @@ public class LuniChess extends Application{
     
     private final static BoardPainter m_boardPainter = new BoardPainter(m_canvas.getGraphicsContext2D());
     
+    private final static BoardActions m_boardActions = new BoardActions();
+    
 
     @Override
     public void start(Stage stage) throws Exception {
         initDefault();
 
+        EventHandler<MouseEvent> boardPressed = new EventHandler<MouseEvent>() { 
+           @Override 
+           public void handle(MouseEvent e) {
+               m_boardActions.setPressed(new Coord((int)e.getY(), (int)e.getX()));
+           } 
+        };
+        EventHandler<MouseEvent> boardReleased = new EventHandler<MouseEvent>() {
+            @Override 
+            public void handle(MouseEvent e) { 
+                m_boardActions.setReleased(new Coord((int)e.getY(), (int)e.getX()));
+            } 
+         };
+
         m_canvas.setWidth(m_prefs.getDouble("boardsize", 500));
         m_canvas.setHeight(m_prefs.getDouble("boardsize", 500));
+        m_canvas.setOnMousePressed(boardPressed);
+        m_canvas.setOnMouseReleased(boardReleased);
         m_game = new Game();
         m_game.initBoard();
         m_boardPainter.paint(getBoard());
@@ -52,8 +72,8 @@ public class LuniChess extends Application{
         Scene scene = new Scene(m_borderPane);
         
         
-        double width = m_prefs.getDouble("width", 700);
-        double height = m_prefs.getDouble("height", 500);
+        double width = m_prefs.getDouble("width", 1000);
+        double height = m_prefs.getDouble("height", 700);
         
         stage.setWidth(width);
         stage.setHeight(height);
@@ -95,6 +115,7 @@ public class LuniChess extends Application{
             m_prefs.putDouble("xPosition", 0);
             m_prefs.putDouble("yPosition", 0);
             m_prefs.putDouble("boardsize", Toolkit.getDefaultToolkit().getScreenSize().height / 2);
+            m_prefs.putInt("boardsense", 1);
         } catch (BackingStoreException e) {
             e.printStackTrace();
         }
