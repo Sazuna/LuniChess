@@ -1,7 +1,5 @@
+/app/
 /board/
+/game/
 /pgn/
 /piece/
-/bin/
-*/*.class
-/app/
-/game/

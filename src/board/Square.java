@@ -47,6 +47,10 @@ public class Square {
         return m_coord.getColumn();
     }
     
+    public Coord getCoord() {
+        return m_coord;
+    }
+    
     public void clear() {
         m_piece = null;
     }
@@ -56,6 +60,6 @@ public class Square {
     }
     
     public ArrayList<Coord> getPossibleSquares() {
-        return m_piece.getPossibleSquares();
+        return m_piece.getPossibleSquares(this);
     }
 }

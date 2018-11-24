@@ -3,12 +3,11 @@ package piece;
 import java.util.ArrayList;
 
 import board.Coord;
-import board.Square;
 
 public class Knight extends Piece {
 
-	public Knight(ChessColor color, Coord coord) {
-		super(color, coord);
+	public Knight(ChessColor color) {
+		super(color);
 		if (color.equals(ChessColor.BLACK)) {
 			super.m_name = 'n';
 		}
@@ -16,22 +15,12 @@ public class Knight extends Piece {
 			super.m_name = 'N';
 		}
 	}
-	
-    public Knight(ChessColor color, Square square) {
-        super(color, new Coord(square.getRange(), square.getColumn()));
-        if (color.equals(ChessColor.BLACK)) {
-            super.m_name = 'n';
-        }
-        else {
-            super.m_name = 'N';
-        }
-    }
 
     @Override
-    public ArrayList<Coord> getPossibleSquares() {
+    public ArrayList<Coord> getPossibleSquares(Coord coord) {
         ArrayList<Coord> allPossibleSquares = new ArrayList<>();
-        int column = super.getColumn();
-        int range = super.getRange();
+        int column = coord.getColumn();
+        int range = coord.getRange();
         for (int i = -1; i <= 1; i+=2 ) {
             for (int j = -2; j <= 2; j+=4) {
                 if (column + i >= 0 && column + i < 8) 

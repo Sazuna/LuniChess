@@ -211,23 +211,23 @@ public class Fen {
             }
         }
         if (previous == '/') {
-            System.out.println("There is a missing range");
+            System.err.println("There is a missing range");
             return false;
         }
         if (blackKing != 1 || whiteKing != 1) {
-            System.out.println("There is not one king of each color");
+            System.err.println("There is not one king of each color");
             return false;
         }
         if (nbWhitePawns > 8 || nbBlackPawns > 8) {
-            System.out.println("There is too much pawns on the board");
+            System.err.println("There is too much pawns on the board");
             return false;
         }
         if (nbBlackPieces > 8 && 8 - nbBlackPawns < nbBlackPieces - 8 || nbWhitePieces > 8 && 8 - nbWhitePawns < nbWhitePieces - 8) {
-            System.out.println("There is too much pieces on the board");
+            System.err.println("There is too much pieces on the board");
             return false;
         }
         if (nbRange != 8 ) {
-            System.out.println("There is not eight ranges on the board");
+            System.err.println("There is not eight ranges on the board");
             return false;
         }
         return true;
@@ -239,7 +239,7 @@ public class Fen {
             for (int j = 0 ; j < 8; j++) {
                 char actual = m_fen.charAt((7 - i) * 8 + j);
                 Coord coord = new Coord(i,j);
-                Piece piece = Fen.newPiece(actual, new Coord(i,j));
+                Piece piece = Fen.newPiece(actual);
                 board.setPiece(piece, coord);
             }
         }
@@ -252,15 +252,15 @@ public class Fen {
      * @param coord
      * @return
      */
-    public static Piece newPiece(char piece, Coord coord) {
+    public static Piece newPiece(char piece) {
         char upper = Character.toUpperCase(piece);
         switch (upper) {
-            case 'N' : return new Knight(ChessColor.getFenColorOf(piece), coord);
-            case 'B' : return new Bishop(ChessColor.getFenColorOf(piece), coord);
-            case 'R' : return new Rook(ChessColor.getFenColorOf(piece), coord);
-            case 'P' : return new Pawn(ChessColor.getFenColorOf(piece), coord);
-            case 'K' : return new King(ChessColor.getFenColorOf(piece), coord);
-            case 'Q' : return new Queen(ChessColor.getFenColorOf(piece), coord);
+            case 'N' : return new Knight(ChessColor.getFenColorOf(piece));
+            case 'B' : return new Bishop(ChessColor.getFenColorOf(piece));
+            case 'R' : return new Rook(ChessColor.getFenColorOf(piece));
+            case 'P' : return new Pawn(ChessColor.getFenColorOf(piece));
+            case 'K' : return new King(ChessColor.getFenColorOf(piece));
+            case 'Q' : return new Queen(ChessColor.getFenColorOf(piece));
         }
         return null;
     }

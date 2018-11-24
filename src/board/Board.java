@@ -98,25 +98,25 @@ public class Board implements ConstBoard {
      */
     public void init() {
         clear();
-        m_board[0][0].setPiece(new Rook(WHITE, new Coord(0,0)));
-        m_board[0][1].setPiece(new Knight(WHITE, new Coord(0,1)));
-        m_board[0][2].setPiece(new Bishop(WHITE, new Coord(0,2)));
-        m_board[0][3].setPiece(new Queen(WHITE, new Coord(0,3)));
-        m_board[0][4].setPiece(new King(WHITE, new Coord(0,4)));
-        m_board[0][5].setPiece(new Bishop(WHITE, new Coord(0,5)));
-        m_board[0][6].setPiece(new Knight(WHITE, new Coord(0,6)));
-        m_board[0][7].setPiece(new Rook(WHITE, new Coord(0,7)));
-        m_board[7][0].setPiece(new Rook(BLACK, new Coord(7,0)));
-        m_board[7][1].setPiece(new Knight(BLACK, new Coord(7,1)));
-        m_board[7][2].setPiece(new Bishop(BLACK, new Coord(7,2)));
-        m_board[7][3].setPiece(new Queen(BLACK, new Coord(7,3)));
-        m_board[7][4].setPiece(new King(BLACK, new Coord(7,4)));
-        m_board[7][5].setPiece(new Bishop(BLACK, new Coord(7,5)));
-        m_board[7][6].setPiece(new Knight(BLACK, new Coord(7,6)));
-        m_board[7][7].setPiece(new Rook(BLACK, new Coord(7,7)));
+        m_board[0][0].setPiece(new Rook(WHITE));
+        m_board[0][1].setPiece(new Knight(WHITE));
+        m_board[0][2].setPiece(new Bishop(WHITE));
+        m_board[0][3].setPiece(new Queen(WHITE));
+        m_board[0][4].setPiece(new King(WHITE));
+        m_board[0][5].setPiece(new Bishop(WHITE));
+        m_board[0][6].setPiece(new Knight(WHITE));
+        m_board[0][7].setPiece(new Rook(WHITE));
+        m_board[7][0].setPiece(new Rook(BLACK));
+        m_board[7][1].setPiece(new Knight(BLACK));
+        m_board[7][2].setPiece(new Bishop(BLACK));
+        m_board[7][3].setPiece(new Queen(BLACK));
+        m_board[7][4].setPiece(new King(BLACK));
+        m_board[7][5].setPiece(new Bishop(BLACK));
+        m_board[7][6].setPiece(new Knight(BLACK));
+        m_board[7][7].setPiece(new Rook(BLACK));
         for (int i = 0 ; i < 8; i++) {
-            m_board[1][i].setPiece(new Pawn(WHITE, new Coord(1,i)));
-            m_board[6][i].setPiece(new Pawn(BLACK, new Coord(6,i)));
+            m_board[1][i].setPiece(new Pawn(WHITE));
+            m_board[6][i].setPiece(new Pawn(BLACK));
         }
         m_whiteCastle = true;
         m_blackCastle = true;
@@ -124,13 +124,8 @@ public class Board implements ConstBoard {
         m_blackLongCastle = true;
     }
     
-    public void setPiece(Piece piece) {
-        m_board[piece.getRange()][piece.getColumn()].setPiece(piece);
-    }
-    
     public void setPiece(Piece piece, Coord coord) {
-        piece.setCoord(coord);
-        setPiece(piece);
+        m_board[coord.getRange()][coord.getColumn()].setPiece(piece);
     }
     
     public void clearPiece(Coord coord) {
@@ -144,17 +139,17 @@ public class Board implements ConstBoard {
      * This method will force the piece to the square,
      * ignoring the legal moves.
      * @param piece
-     * @param coord the destination of the piece.
+     * @param from the square the piece comes from.
+     * @param to the destination of the piece.
      * @see setToMove(ChessColor color)
      */
-    public void move(Piece piece, Coord coord) {
-        Square from = getSquare(piece.getCoord());
-        Square to = getSquare(coord);
-        if (to.hasPiece())
-            setCaptured(to.getPiece());
-        from.clear();
-        to.setPiece(piece);
-        piece.setCoord(coord);
+    public void move(Piece piece, Coord from, Coord to) {
+        Square sfrom = getSquare(from);
+        Square sto = getSquare(to);
+        if (sto.hasPiece())
+            setCaptured(sto.getPiece());
+        sfrom.clear();
+        sto.setPiece(piece);
     }
     
     public ArrayList<Square> getSquaresBetween(Square from, Square to) {

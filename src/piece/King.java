@@ -3,22 +3,11 @@ package piece;
 import java.util.ArrayList;
 
 import board.Coord;
-import board.Square;
 
 public class King extends Piece {
 	
-    public King(ChessColor color, Coord coord) {
-        super(color, coord);
-        if (color.equals(ChessColor.BLACK)) {
-            super.m_name = 'k';
-        }
-        else {
-            super.m_name = 'K';
-        }
-    }
-
-    public King(ChessColor color, Square square) {
-        super(color, new Coord(square.getRange(), square.getColumn()));
+    public King(ChessColor color) {
+        super(color);
         if (color.equals(ChessColor.BLACK)) {
             super.m_name = 'k';
         }
@@ -28,10 +17,10 @@ public class King extends Piece {
     }
     
     @Override
-    public ArrayList<Coord> getPossibleSquares() {
+    public ArrayList<Coord> getPossibleSquares(Coord coord) {
         ArrayList<Coord> possibleSquares = new ArrayList<>();
-        int column = super.getColumn();
-        int range = super.getRange();
+        int column = coord.getColumn();
+        int range = coord.getRange();
         for (int i = -1; i <= 1; i++)
             for (int j = -1; j <= 1; j++)
                 if (i != 0 || j != 0)

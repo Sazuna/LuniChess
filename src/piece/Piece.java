@@ -3,16 +3,15 @@ package piece;
 import java.util.ArrayList;
 
 import board.Coord;
+import board.Square;
 
 public abstract class Piece{
     
     protected char m_name;
     protected ChessColor m_color;
-    protected Coord m_coord;
     
-    protected Piece(ChessColor color, Coord coord) {
+    protected Piece(ChessColor color) {
         m_color = color;
-        m_coord = coord;
     }
     
     /**
@@ -32,21 +31,14 @@ public abstract class Piece{
         return m_color;
     }
     
-    public Coord getCoord() {
-        return m_coord;
-    }
-
-    public int getColumn() {
-        return m_coord.getColumn();
-    }
+    /**
+     * 
+     * @param from The square where the piece is
+     * @return
+     */
+    public abstract ArrayList<Coord> getPossibleSquares(Coord from);
     
-    public int getRange() {
-        return m_coord.getRange();
+    public ArrayList<Coord> getPossibleSquares(Square from) {
+        return getPossibleSquares(from.getCoord());
     }
-    
-    public void setCoord(Coord coord) {
-        m_coord = coord;
-    }
-    
-    public abstract ArrayList<Coord> getPossibleSquares();
 }

@@ -3,12 +3,11 @@ package piece;
 import java.util.ArrayList;
 
 import board.Coord;
-import board.Square;
 
 public class Bishop extends Piece {
 
-	public Bishop(ChessColor color, Coord coord) {
-		super(color, coord);
+	public Bishop(ChessColor color) {
+		super(color);
 		if (color.equals(ChessColor.BLACK)) {
 			super.m_name = 'b';
 		}
@@ -17,21 +16,11 @@ public class Bishop extends Piece {
 		}
 	}
 
-    public Bishop(ChessColor color, Square square) {
-        super(color, new Coord(square.getRange(), square.getColumn()));
-        if (color.equals(ChessColor.BLACK)) {
-            super.m_name = 'b';
-        }
-        else {
-            super.m_name = 'B';
-        }
-    }
-
     @Override
-    public ArrayList<Coord> getPossibleSquares() {
+    public ArrayList<Coord> getPossibleSquares(Coord coord) {
         ArrayList<Coord> allPossibleSquares = new ArrayList<>();
-        int range = super.getRange();
-        int column = super.getColumn();
+        int range = coord.getRange();
+        int column = coord.getColumn();
         for (int i = 0; i <= 7; i++ ) {
             if (i != 0) {
                 if (range + i >= 0 && range + i < 8) {
