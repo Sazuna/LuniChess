@@ -8,6 +8,7 @@ import board.Square;
 public abstract class Piece{
     
     protected char m_name;
+    
     protected ChessColor m_color;
     
     protected Piece(ChessColor color) {

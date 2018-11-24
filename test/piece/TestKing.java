@@ -18,5 +18,15 @@ class TestKing {
         assertTrue(possibleSquares.contains(new Coord("c6")));
         assertTrue(possibleSquares.contains(new Coord("d6")));
     }
+    
+
+    @Test
+    void test2() {
+        Piece p = new King(ChessColor.BLACK);
+        ArrayList<Coord> possibleSquares = p.getPossibleSquares(new Coord("e8"));
+        assertTrue(possibleSquares.contains(new Coord("d8")));
+        assertTrue(possibleSquares.contains(new Coord("d7")));
+        assertTrue(possibleSquares.contains(new Coord("f8")));
+    }
 
 }

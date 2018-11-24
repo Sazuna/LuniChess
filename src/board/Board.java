@@ -237,4 +237,13 @@ public class Board implements ConstBoard {
     public Square getSquare(Coord coord) {
         return getSquare(coord.getRange(), coord.getColumn());
     }
+
+
+    @Override
+    public ArrayList<Coord> getPossibleMoves(Square square) {
+        Piece piece = square.getPiece();
+        ArrayList<Coord> possibleSquares = piece.getPossibleSquares(square);
+        
+        return possibleSquares;
+    }
 }

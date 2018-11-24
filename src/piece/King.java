@@ -26,7 +26,7 @@ public class King extends Piece {
                 if (i != 0 || j != 0)
                     if (range + i >= 0 && range + i < 8
                     && column + j >= 0 && column + j < 8)
-                        possibleSquares.add(new Coord(range + j, column + i));
+                        possibleSquares.add(new Coord(range + i, column + j));
         return possibleSquares;
     }
 }

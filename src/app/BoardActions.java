@@ -1,7 +1,12 @@
 package app;
 
+import java.util.ArrayList;
+
+import board.ConstBoard;
+import board.Coord;
 import board.Square;
 import piece.ChessColor;
+import piece.Piece;
 
 public class BoardActions{
     
@@ -13,9 +18,14 @@ public class BoardActions{
     
     private static BoardPainter m_boardPainter;
     
+    private boolean m_highlighted;
+    
+    private ArrayList<Coord> m_possibleSquares;
+    
     public BoardActions(BoardPainter boardPainter, ChessColor toMove) {
         m_boardPainter = boardPainter;
         m_toMove = toMove;
+        m_highlighted = false;
     }
     
     public void setToMove(ChessColor toMove) {
@@ -30,10 +40,10 @@ public class BoardActions{
         return m_released;
     }
     
-    public void setPressed(Square square) {
+    public void setPressed(Square square, ConstBoard board) {
         m_pressed = square;
         m_released = null;
-        executePressed();
+        executePressed(board);
     }
     
     /**
@@ -41,20 +51,41 @@ public class BoardActions{
      * @param coord
      * @return true if different squares.
      */
-    public boolean setReleased(Square square) {
+    public boolean setReleased(Square square, ConstBoard board) {
         m_released = square;
-        return executeReleased();
+        return executeReleased(board);
     }
     
-    private void executePressed() {
-        
+    private void executePressed(ConstBoard board) {
+        if (! m_pressed.hasPiece()) {
+            if (m_highlighted)
+                m_boardPainter.paint();
+            return;
+        }
+        Piece piece = m_pressed.getPiece();
+        ChessColor color = piece.getColor();
+        if (color.equals(m_toMove)) {
+        //    m_possibleSquares = m_pressed.getPossibleSquares();
+            m_possibleSquares = board.getPossibleMoves(m_pressed);
+            m_boardPainter.highlight(m_possibleSquares, m_toMove.otherColor());
+            m_highlighted = true;
+        }
     }
     
-    private boolean executeReleased() {
-        if (m_pressed.equals(m_released))
+    /**
+     * @return true if a move has to be done.
+     */
+    private boolean executeReleased(ConstBoard board) {
+        if (m_pressed.equals(m_released)) {
+            if (m_highlighted)
+                m_boardPainter.paint();
             return false;
+        }
         if (! m_pressed.getPiece().getColor().equals(m_toMove))
             return false;
+        
+        for (Coord coord : m_possibleSquares)
+        m_boardPainter.drawPiece(coord);
         return true;
     }
 }

@@ -22,7 +22,6 @@ import piece.ChessColor;
 public class LuniChess{
     
     public LuniChess() {
-        m_game = new Game();
         initGame();
         m_boardPainter = new BoardPainter(m_canvas.getGraphicsContext2D(), m_settings, getBoard());
         m_boardActions = new BoardActions(m_boardPainter, m_game.getToMove());
@@ -52,7 +51,7 @@ public class LuniChess{
                double size = m_settings.getSquareSize();
                Coord coord = AppUtil.getClickedCoord(e.getX(), e.getY(), sense, size);
                Square square = getBoard().getSquare(coord.getRange(), coord.getColumn());
-               m_boardActions.setPressed(square);
+               m_boardActions.setPressed(square, getBoard());
            } 
         };
         EventHandler<MouseEvent> boardReleased = new EventHandler<MouseEvent>() {
@@ -62,7 +61,7 @@ public class LuniChess{
                 double size = m_settings.getSquareSize();
                 Coord coord = AppUtil.getClickedCoord(e.getX(), e.getY(), sense, size);
                 Square square = getBoard().getSquare(coord.getRange(), coord.getColumn());
-                boolean play = m_boardActions.setReleased(square);
+                boolean play = m_boardActions.setReleased(square, getBoard());
                 if (play) {
                     play(m_boardActions.getFrom(), m_boardActions.getTo());
                 }
@@ -73,12 +72,8 @@ public class LuniChess{
         m_canvas.setHeight(m_prefs.getDouble("boardsize", 500));
         m_canvas.setOnMousePressed(boardPressed);
         m_canvas.setOnMouseReleased(boardReleased);
-        m_game = new Game();
-        m_game.initBoard();
         m_boardPainter.paint();
         m_borderPane.setCenter(m_canvas);
-        Button menu = new Button("Play");
-        m_borderPane.setTop(menu);
         Scene scene = new Scene(m_borderPane);
         
         
@@ -109,10 +104,6 @@ public class LuniChess{
         stage.setScene(scene);
         
         stage.show();
-    }
-    
-    private ConstBoard getBoard() {
-        return m_game.getBoard();
     }
     
     private void initDefault() {
@@ -147,8 +138,7 @@ public class LuniChess{
     
    /////////////////////////////////// Game methods ////////////
     private void initGame() {
-        m_game.initBoard();
-        m_game.initTree();
+        m_game = new Game();
     }
     
     private void setToMove(ChessColor toMove) {
@@ -158,6 +148,10 @@ public class LuniChess{
     
     private ChessColor getToMove() {
         return m_game.getToMove();
+    }
+
+    private ConstBoard getBoard() {
+        return m_game.getBoard();
     }
     ////////////////////////////////////////////////////////////
 }

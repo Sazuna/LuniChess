@@ -24,10 +24,10 @@ public class Pawn extends Piece {
         int column = coord.getColumn();
         int range = coord.getRange();
         for (int i = -1; i <= 1; i++ )
-            if (column + i >= 0 && range + i < 8)
+            if (column + i >= 0 && column + i < 8)
                 allPossibleSquares.add(new Coord(range + sense, column + i));
         if (range == firstRange)
-            allPossibleSquares.add(new Coord(range + 2*sense, column));
+            allPossibleSquares.add(new Coord(range + 2 * sense, column));
         return allPossibleSquares;
     }
 }
