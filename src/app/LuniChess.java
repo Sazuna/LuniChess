@@ -21,11 +21,11 @@ import javafx.stage.Stage;
 public class LuniChess extends Application{
 
     public static void main(String[] args) {
-       try {
+       /*try {
             //Clear the user's prefs
             Preferences.userNodeForPackage(LuniChess.class).removeNode();
         } catch (BackingStoreException e) {
-        }
+        }*/
       Application.launch(args);
     }
     
@@ -37,7 +37,9 @@ public class LuniChess extends Application{
     
     private final static Canvas m_canvas = new Canvas();
     
-    private final static BoardPainter m_boardPainter = new BoardPainter(m_canvas.getGraphicsContext2D());
+    private final static AppSettings m_settings = new AppSettings();
+    
+    private final static BoardPainter m_boardPainter = new BoardPainter(m_canvas.getGraphicsContext2D(), m_settings);
     
     private final static BoardActions m_boardActions = new BoardActions();
     
@@ -49,13 +51,19 @@ public class LuniChess extends Application{
         EventHandler<MouseEvent> boardPressed = new EventHandler<MouseEvent>() { 
            @Override 
            public void handle(MouseEvent e) {
-               m_boardActions.setPressed(new Coord((int)e.getY(), (int)e.getX()));
+               int sense = m_settings.getBoardSense();
+               double size = m_settings.getSquareSize();
+               Coord coord = AppUtil.getClickedSquare(e.getX(), e.getY(), sense, size);
+               m_boardActions.setPressed(coord);
            } 
         };
         EventHandler<MouseEvent> boardReleased = new EventHandler<MouseEvent>() {
             @Override 
-            public void handle(MouseEvent e) { 
-                m_boardActions.setReleased(new Coord((int)e.getY(), (int)e.getX()));
+            public void handle(MouseEvent e) {
+                int sense = m_settings.getBoardSense();
+                double size = m_settings.getSquareSize();
+                Coord coord = AppUtil.getClickedSquare(e.getX(), e.getY(), sense, size);
+                m_boardActions.setReleased(coord);
             } 
          };
 

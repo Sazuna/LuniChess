@@ -15,6 +15,7 @@ public class BoardActions {
     
     public void setReleased(Coord coord) {
         m_released = coord;
+        executeAction();
     }
     
     public void executeAction() {

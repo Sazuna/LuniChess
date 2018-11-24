@@ -1,7 +1,6 @@
 package game;
 
 import board.Square;
-import piece.ChessColor;
 import piece.Piece;
 
 public class Move {

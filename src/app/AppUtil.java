@@ -22,7 +22,7 @@ public final class AppUtil {
         return x;
     }
     
-    public static int getRange(double y, int sense, int size) {
+    public static int getRange(double y, int sense, double size) {
         int range;
         if (sense == 1)
             range = (int)(y / size);
@@ -31,16 +31,16 @@ public final class AppUtil {
         return 7 - range;
     }
     
-    public static int getColumn(double x, int sense, int size) {
+    public static int getColumn(double x, int sense, double size) {
         int column;
         if (sense == 1)
-            column = (int)(- x / size + 7);
-        else 
             column = (int)(x / size);
-        return 7 - column;
+        else 
+            column = 7 - (int)(x / size);
+        return column;
     }
     
-    public static Coord getClickedSquare(double x, double y, int sense, int size) {
+    public static Coord getClickedSquare(double x, double y, int sense, double size) {
         Coord coord = new Coord(AppUtil.getRange(y, sense, size),AppUtil.getColumn(x, sense, size));
         return coord;
     }
