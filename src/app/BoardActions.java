@@ -89,9 +89,11 @@ public class BoardActions{
                 m_boardPainter.paint();
             return false;
         }
+        if (! m_pressed.hasPiece()) {
+            return false;
+        }
         if (! m_pressed.getPiece().getColor().equals(m_toMove))
             return false;
-        
         for (Coord coord : m_possibleSquares)
         m_boardPainter.drawPiece(coord);
         return true;

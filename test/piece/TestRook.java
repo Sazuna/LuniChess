@@ -18,5 +18,4 @@ class TestRook {
         assertTrue(possibleSquares.contains(new Coord("h8")));
         assertTrue(possibleSquares.contains(new Coord("h2")));
     }
-
 }

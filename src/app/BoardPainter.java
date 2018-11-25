@@ -18,6 +18,12 @@ public class BoardPainter {
     
     private ConstBoard m_board;
     
+    private boolean m_isCheck;
+    
+    private boolean m_wasCheck;
+    
+    private Square m_check;
+    
     public BoardPainter(GraphicsContext graphics, AppSettings settings, ConstBoard board) {
         m_graphics = graphics;
         m_settings = settings;
@@ -39,6 +45,16 @@ public class BoardPainter {
     public void move(Square from, Square to) {
         emptySquare(from.getCoord());
         drawPiece(to);
+        m_check = m_board.getKing(to.getPiece().getColor().otherColor());
+        m_isCheck = m_board.isCheck(m_check);
+        if (m_isCheck)
+            drawCheck();
+     //   if (m_wasCheck && ! m_isCheck)
+     //       emptySquare(m_check.getCoord());
+        if (! m_isCheck)
+            m_check = null;
+        m_wasCheck = m_isCheck;
+        
     }
     
     public void emptySquare(Coord coord) {
@@ -87,6 +103,15 @@ public class BoardPainter {
                 m_graphics.setFill(Color.rgb(0, 255, 255, 0.05));
             else
                 m_graphics.setFill(Color.rgb(255, 0, 0, 0.05));
+            m_graphics.fillOval(x + i, y + i, size - 2 * i, size - 2 * i);
+        }
+    }
+    
+    private void drawCheck() {
+        double x = getX(m_check);
+        double y = getY(m_check);
+        double size = m_settings.getSquareSize();for (int i = (int)(size / 2) ; i > size / 10 ; i --) {
+            m_graphics.setFill(Color.rgb(255, 0, 0, 0.05));
             m_graphics.fillOval(x + i, y + i, size - 2 * i, size - 2 * i);
         }
     }

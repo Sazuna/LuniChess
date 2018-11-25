@@ -237,13 +237,63 @@ public class Board implements ConstBoard {
     public Square getSquare(Coord coord) {
         return getSquare(coord.getRange(), coord.getColumn());
     }
-
-
+    
+    @Override
+    public Square getKing(ChessColor color) {
+        Square s;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                s = m_board[i][j];
+                if (s.hasPiece() && s.getPiece().toString().equals("K") && s.getPiece().getColor().equals(color))
+                    return s;
+            }
+        }
+        System.err.println("Board.java : there is no " + color.toString() +" king on the board.");
+        return null;
+    }
+    
     @Override
     public ArrayList<Coord> getPossibleMoves(Square square) {
         Piece piece = square.getPiece();
         ArrayList<Coord> possibleSquares = piece.getPossibleSquares(square);
         
         return possibleSquares;
+    }
+    
+    public boolean isCheck(Square kingPosition) {
+        assert (kingPosition.hasPiece() && kingPosition.getPiece().toString().equals("K"));
+        Piece p = kingPosition.getPiece();
+        ChessColor toMove = p.getColor();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Square square = m_board[i][j];
+                if (square.hasPiece()) {
+                    Piece piece = square.getPiece();
+                    if (piece.getColor().equals(toMove.otherColor())) {
+                        ArrayList<Square> attacked = piece.getPossibleMoves(square.getCoord(), this, null);
+                        if (attacked.contains(kingPosition))
+                            return true;
+                    }
+                        
+                }
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public Board clone() {
+        Board copy = new Board();
+        for (int range = 0 ; range < 7 ; range ++) {
+            for (int column = 0; column < 7; column ++) {
+                Square square = m_board[range][column];
+                copy.setPiece(square.getPiece(), square.getCoord());
+            }
+        }
+        copy.setWhiteCastle(m_whiteCastle);
+        copy.setWhiteLongCastle(m_whiteLongCastle);
+        copy.setBlackCastle(m_blackCastle);
+        copy.setBlackLongCastle(m_blackLongCastle);
+        return copy;
     }
 }
