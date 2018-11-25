@@ -2,7 +2,10 @@ package piece;
 
 import java.util.ArrayList;
 
+import board.ConstBoard;
 import board.Coord;
+import board.Square;
+import game.Move;
 
 public class King extends Piece {
 	
@@ -28,5 +31,12 @@ public class King extends Piece {
                     && column + j >= 0 && column + j < 8)
                         possibleSquares.add(new Coord(range + i, column + j));
         return possibleSquares;
+    }
+
+    @Override
+    public ArrayList<Square> getPossibleMoves(Coord coord, ConstBoard board, Move lastMove) {
+        ArrayList<Square> possibleMoves = new ArrayList<>();
+        // TODO Auto-generated method stub
+        return possibleMoves;
     }
 }

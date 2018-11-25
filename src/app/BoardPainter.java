@@ -84,9 +84,9 @@ public class BoardPainter {
         boolean capture = square.hasPiece() && square.getPiece().getColor().equals(toMove);
         for (int i = (int)(size / 2) ; i > size / 10 ; i --) {
             if (! capture)
-                m_graphics.setFill(Color.rgb(0, 255 - i, 255 - i, 0.04));
+                m_graphics.setFill(Color.rgb(0, 255, 255, 0.05));
             else
-                m_graphics.setFill(Color.rgb(255 - i, 0, 0, 0.1));
+                m_graphics.setFill(Color.rgb(255, 0, 0, 0.05));
             m_graphics.fillOval(x + i, y + i, size - 2 * i, size - 2 * i);
         }
     }

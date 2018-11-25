@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import board.ConstBoard;
 import board.Coord;
 import board.Square;
+import game.Move;
 import piece.ChessColor;
 import piece.Piece;
 
@@ -22,10 +23,13 @@ public class BoardActions{
     
     private ArrayList<Coord> m_possibleSquares;
     
+    private Move m_lastMove;
+    
     public BoardActions(BoardPainter boardPainter, ChessColor toMove) {
         m_boardPainter = boardPainter;
         m_toMove = toMove;
         m_highlighted = false;
+        m_possibleSquares = new ArrayList<>();
     }
     
     public void setToMove(ChessColor toMove) {
@@ -65,8 +69,12 @@ public class BoardActions{
         Piece piece = m_pressed.getPiece();
         ChessColor color = piece.getColor();
         if (color.equals(m_toMove)) {
-        //    m_possibleSquares = m_pressed.getPossibleSquares();
-            m_possibleSquares = board.getPossibleMoves(m_pressed);
+            ArrayList<Square> possibleMoves = m_pressed.getPiece().getPossibleMoves(m_pressed.getCoord(), board, m_lastMove);
+        //    m_possibleSquares = board.getPossibleMoves(m_pressed);
+            m_possibleSquares.clear();
+            for (Square s : possibleMoves) {
+                m_possibleSquares.add(s.getCoord());
+            }
             m_boardPainter.highlight(m_possibleSquares, m_toMove.otherColor());
             m_highlighted = true;
         }

@@ -2,7 +2,10 @@ package piece;
 
 import java.util.ArrayList;
 
+import board.ConstBoard;
 import board.Coord;
+import board.Square;
+import game.Move;
 
 public class Queen extends Piece {
 
@@ -18,8 +21,15 @@ public class Queen extends Piece {
 
     @Override
     public ArrayList<Coord> getPossibleSquares(Coord coord) {
-        ArrayList<Coord> possibleSquares = new Bishop(super.getColor()).getPossibleSquares(coord);
-        possibleSquares.addAll(new Rook(super.getColor()).getPossibleSquares(coord));
+        ArrayList<Coord> possibleSquares = new Bishop(m_color).getPossibleSquares(coord);
+        possibleSquares.addAll(new Rook(m_color).getPossibleSquares(coord));
         return possibleSquares;
+    }
+
+    @Override
+    public ArrayList<Square> getPossibleMoves(Coord coord, ConstBoard board, Move lastMove) {
+        ArrayList<Square> possibleMoves = new Bishop(m_color).getPossibleMoves(coord, board, lastMove);
+        possibleMoves.addAll(new Rook(m_color).getPossibleMoves(coord, board, lastMove));
+        return possibleMoves;
     }
 }

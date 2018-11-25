@@ -2,7 +2,10 @@ package piece;
 
 import java.util.ArrayList;
 
+import board.ConstBoard;
 import board.Coord;
+import board.Square;
+import game.Move;
 
 public class Knight extends Piece {
 
@@ -32,5 +35,18 @@ public class Knight extends Piece {
             }
         }
         return allPossibleSquares;
+    }
+
+    @Override
+    public ArrayList<Square> getPossibleMoves(Coord coord, ConstBoard board, Move lastMove) {
+        ArrayList<Coord> possibleSquares = getPossibleSquares(coord);
+        ArrayList<Square> possibleMoves = new ArrayList<>();
+        Square s;
+        for (Coord c : possibleSquares) {
+            s = board.getSquare(c);
+            if (! s.hasPiece() || s.hasPiece() && s.getPiece().getColor().equals(m_color.otherColor()))
+                possibleMoves.add(s);
+        }
+        return possibleMoves;
     }
 }

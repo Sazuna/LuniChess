@@ -2,8 +2,11 @@ package piece;
 
 import java.util.ArrayList;
 
+import board.Board;
+import board.ConstBoard;
 import board.Coord;
 import board.Square;
+import game.Move;
 
 public abstract class Piece{
     
@@ -38,6 +41,8 @@ public abstract class Piece{
      * @return
      */
     public abstract ArrayList<Coord> getPossibleSquares(Coord from);
+    
+    public abstract ArrayList<Square> getPossibleMoves(Coord coord, ConstBoard board, Move lastMove);
     
     public ArrayList<Coord> getPossibleSquares(Square from) {
         return getPossibleSquares(from.getCoord());
